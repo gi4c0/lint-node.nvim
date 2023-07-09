@@ -37,4 +37,13 @@ M.trimStr = function(str)
   return (str:gsub("^%s*(.-)%s*$", "%1"))
 end
 
+M.find_index = function (table, fn)
+  for i, v in ipairs(table) do
+    if fn(v) then
+      return i
+    end
+  end
+  return nil
+end
+
 return M

@@ -1,6 +1,9 @@
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
 local pickers = require "telescope.pickers"
 local finders = require "telescope.finders"
 local conf = require("telescope.config").values
+local utils = require "lint-node.utils"
 
 local M = {}
 
@@ -25,8 +28,21 @@ M.show = function(output, reloadFunc, opts)
       end
     },
     previewer = conf.file_previewer(opts),
-    attach_mappings = function(_, map)
+    attach_mappings = function(prompt_bufnr, map)
       map("i", "<C-r>", reloadFunc)
+
+
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+
+        local selection = action_state.get_selected_entry()
+        local error_index = utils.find_index(output, function(item)
+          return item.path == selection.path
+        end)
+
+        table.remove(output, error_index)
+        vim.api.nvim_command("e +"..selection.lnum.." "..selection.path)
+      end)
       return true
     end
   }):find()
