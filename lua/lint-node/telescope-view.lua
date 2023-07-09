@@ -37,7 +37,7 @@ M.show = function(output, reloadFunc, opts)
 
         local selection = action_state.get_selected_entry()
         local error_index = utils.find_index(output, function(item)
-          return item.path == selection.path
+          return item.path == selection.path and item.lnum == selection.value.lnum and item.column == selection.value.column
         end)
 
         table.remove(output, error_index)
