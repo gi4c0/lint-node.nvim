@@ -20,7 +20,7 @@ M.show = function(output, opts)
           end,
           ordinal = entry.path,
           path = entry.path,
-          lnum = entry.lnum
+          lnum = tonumber(entry.lnum)
         }
       end
     },

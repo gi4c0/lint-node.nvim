@@ -11,4 +11,14 @@ M.split = function(inputstr, sep)
   return t
 end
 
+M.checkConfig = function(config)
+  if not config then
+    error("No config provided for lint-node. Use require('lint-node').setup{cfg}", 2)
+  end
+
+  if not config.command then
+    error("No command provided to execute in the setup function. Use require('lint-node').setup{command = 'your_command'}", 2)
+  end
+end
+
 return M

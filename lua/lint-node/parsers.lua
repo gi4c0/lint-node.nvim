@@ -2,9 +2,9 @@ local utils = require "lint-node.utils"
 
 local M = {}
 
-local tsErrorFilePattern = "(%a+/%a+.ts)%(%d,%d%): error .+: .+%."
-local tsErrorLineAndNumberPattern = "%a+/%a+.ts%((%d,%d)%): error .+: .+%."
-local tsErrorMessagePattern = "%a+/%a+.ts%(%d,%d%): error .+: (.+)%."
+local tsErrorFilePattern = "(%a+/.+.ts)%(%d+,%d+%): error .+: .+%."
+local tsErrorLineAndNumberPattern = "%a+/.+.ts%((%d+,%d+)%): error .+: .+%."
+local tsErrorMessagePattern = "%a+/.+.ts%(%d+,%d+%): error .+: (.+)%."
 
 M.parseTsError = function(str, output)
   -- TS build
