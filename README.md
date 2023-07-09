@@ -1,4 +1,6 @@
 # node-lint.nvim
+<img width="1728" alt="nvim_plugin" src="https://github.com/gi4c0/lint-node.nvim/assets/16100959/7fcd0c74-e1d9-4cb0-9a4a-707cdba36362">
+
 A very simple plugin for getting errors from `typescript`/`eslint` projects and placing results in Telescope.
 So basically it just takes a user's command (e.g. `npm run lint`), runs it in the background, parses the output and displays with the Telescope.
 
