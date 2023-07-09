@@ -1,6 +1,14 @@
 # node-lint.nvim
-A very simple plugin for getting errors from `typescript`/`eslint` projects and places results in Telescope.
+A very simple plugin for getting errors from `typescript`/`eslint` projects and placing results in Telescope.
 So basically it just takes a user's command (e.g. `npm run lint`), runs it in the background, parses the output and displays with the Telescope.
+
+
+By default it caches results because linting and building a project might take a while.
+And it deletes the error from list on opening file (pressing `Enter`). But you can manually reload errors with `<C-r>`
+
+**Default key bindings:**
+* `<leader>eL` - open Telescope with error list (`eL` stands for errors List)
+* `<C-r>` in opened telescope window -- reload results.
 
 ## Installation
 *Packer:*
@@ -57,4 +65,5 @@ Example of `package.json` with `eslint` npm script
 2. In order for plugin to parse the eslint output you need to put `--format json` in the command. For example `eslint --format json src/.`
 
 ## Trouble shouting
-If you encountered any problems please enable `debug` mode with flag `debug = true`, reproduce the issue, copy logs from `:messages<CR>` and create an issue with your logs and description of the error/problem.
+If you encountered any problems please enable `debug` mode with flag `debug = true`, reproduce the issue, 
+copy logs from `:messages<CR>` and create an issue with your logs and description of the error/problem.
