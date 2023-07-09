@@ -10,33 +10,32 @@ M._config = {}
 local output = {}
 
 local function print_stdout(chan_id, data, name)
-  if M._config.debug then
-    print "---- Debug info input ----"
-    P(data)
-    print "--------------------"
-  end
-  -- TS build
-  parsers.parseTsError(data[1], output)
-
-  -- ES lint
-  parsers.parseEsLintError(data[1], output)
+  utils.debug(data, M._config.debug, "input")
+  parsers.parseTsError(data[1], output) -- TS build
+  parsers.parseEsLintError(data[1], output) -- ES lint
 end
 
 local function on_exit(chan_id, data, name)
-  if M._config.debug then
-    print "---- Debug info output ----"
-    P(output)
-    print "--------------------"
-  end
+  utils.debug(output, M._config.debug, "output")
   viewer.show(output)
+  print ""
 end
+
+local function on_error(_, data)
+  utils.debug(data, M._config.debug, "error")
+  local noCommandError = "ERR! Missing script"
+
+  if utils.stringStartsWith(utils.trimStr(data[1]), noCommandError) then
+    error("Command '"..M._config.command.."' not found")
+  end
+end
+
 
 M.lint = function()
   output = {}
-  local job_id = vim.fn.jobstart(M._config.command, {
-    on_stdout = print_stdout,
-    on_exit = on_exit
-  })
+
+  vim.fn.jobstart(M._config.command, { on_stdout = print_stdout, on_exit = on_exit, on_stderr = on_error })
+  print "Searching for errors..."
 end
 
 M.setup = function(config)

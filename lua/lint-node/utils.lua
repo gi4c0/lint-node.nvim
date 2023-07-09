@@ -21,4 +21,20 @@ M.checkConfig = function(config)
   end
 end
 
+M.debug = function(data, debug, level)
+  if debug then
+    print("---- Debug info "..level.." ----")
+    P(data)
+    print "--------------------"
+  end
+end
+
+M.stringStartsWith = function(str, subStr)
+  return string.sub(str, 1, string.len(subStr)) == subStr
+end
+
+M.trimStr = function(str)
+  return (str:gsub("^%s*(.-)%s*$", "%1"))
+end
+
 return M
