@@ -2,6 +2,7 @@ local viewer = require "lint-node.telescope-view"
 local parsers = require "lint-node.parsers"
 local utils = require "lint-node.utils"
 
+local next = next
 local M = {}
 
 M._config = {}
@@ -13,12 +14,14 @@ local function print_stdout(chan_id, data, name)
   utils.debug(data, M._config.debug, "input")
   parsers.parseTsError(data[1], output) -- TS build
   parsers.parseEsLintError(data[1], output) -- ES lint
+  viewer.show(output, function()
+    M.lint(true)
+  end)
 end
 
 local function on_exit(chan_id, data, name)
   utils.debug(output, M._config.debug, "output")
-  viewer.show(output)
-  print ""
+  print " "
 end
 
 local function on_error(_, data)
@@ -30,11 +33,17 @@ local function on_error(_, data)
   end
 end
 
+M.lint = function(forced)
+  if next(output) == nil or forced then
+    output = {}
+    vim.fn.jobstart(M._config.command, { on_stdout = print_stdout, on_exit = on_exit, on_stderr = on_error })
+  else
+    viewer.show(output, function()
+      M.lint(true)
+    end)
+  end
 
-M.lint = function()
-  output = {}
 
-  vim.fn.jobstart(M._config.command, { on_stdout = print_stdout, on_exit = on_exit, on_stderr = on_error })
   print "Searching for errors..."
 end
 

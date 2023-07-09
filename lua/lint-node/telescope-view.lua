@@ -4,7 +4,7 @@ local conf = require("telescope.config").values
 
 local M = {}
 
-M.show = function(output, opts)
+M.show = function(output, reloadFunc, opts)
   opts = opts or {}
 
   pickers.new(opts, {
@@ -24,7 +24,11 @@ M.show = function(output, opts)
         }
       end
     },
-    previewer = conf.file_previewer(opts)
+    previewer = conf.file_previewer(opts),
+    attach_mappings = function(_, map)
+      map("i", "<C-r>", reloadFunc)
+      return true
+    end
   }):find()
 end
 
